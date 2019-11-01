@@ -1,0 +1,60 @@
+package com.cos.test;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.cos.model.Reply;
+import com.google.gson.Gson;
+
+
+@WebServlet("/test")
+public class AjaxTest extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+    public AjaxTest() {
+        super();
+    }
+
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/plain; charset=UTF-8"); //MIME 타입
+		
+		//요청 데이터 처리 (화요일)
+		BufferedReader in = request.getReader();
+		String boardJsonString = in.readLine();
+		System.out.println("요청 데이터 : "+boardJsonString);
+		
+		Gson gson = new Gson();
+		//파싱할 때 null 값 오류뜨는지 테스트
+		Reply reply = gson.fromJson(boardJsonString, Reply.class); 
+		
+		System.out.println("id : "+reply.getId());  //숫자 null은 0으로 떨어짐.
+		System.out.println("boardId : "+reply.getBoardId());
+		System.out.println("userId : "+reply.getUserId());
+		System.out.println("content : "+reply.getContent());
+		System.out.println("createDate : "+reply.getCreateDate()); //문자열은 null
+		
+		//응답 데이터 처리
+		String jsonData = "{\"name\" : \"손흥민\", \"sal\" : 100}";
+		PrintWriter out = response.getWriter();
+		out.println(jsonData);
+		out.flush();
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+	}
+
+}
+
+
+
+

@@ -148,15 +148,16 @@ public class BoardDao {
 			rs = pstmt.executeQuery();
 			while(rs.next()) { //rs.next() 커서이동 return값 boolean
 				Board board = new Board();
-				board.setId(rs.getInt("id"));
-				board.setUserId(rs.getInt("userId"));
-				board.setTitle(rs.getString("title"));
-				board.setContent(rs.getString("content")+" ");
-				board.setReadCount(rs.getInt("readCount"));
-				board.setCreateDate(rs.getTimestamp("createDate"));
+				board.setId(rs.getInt("b.id"));
+				board.setUserId(rs.getInt("b.userId"));
+				board.setTitle(rs.getString("b.title"));
+				board.setContent(rs.getString("b.content")+" ");
+				board.setReadCount(rs.getInt("b.readCount"));
+				board.setCreateDate(rs.getTimestamp("b.createDate"));
 				
 				//(2) board에 user객체에 username 저장 (추후: userProfile 저장)
 				board.getUser().setUsername(rs.getString("u.username")); 
+				
 				boards.add(board); //컬렉션에 담아주기
 			}
 			

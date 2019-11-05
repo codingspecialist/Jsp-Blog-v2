@@ -14,6 +14,7 @@ import com.cos.model.Reply;
 import com.google.gson.Gson;
 
 
+//replyJsonString
 @WebServlet("/test")
 public class AjaxTest extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -25,16 +26,17 @@ public class AjaxTest extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/plain; charset=UTF-8"); //MIME 타입
+		response.setContentType("application/json; charset=UTF-8"); //MIME 타입
 		
-		//요청 데이터 처리 (화요일)
-		BufferedReader in = request.getReader();
-		String boardJsonString = in.readLine();
-		System.out.println("요청 데이터 : "+boardJsonString);
+		//replyJsonString (1)
+		BufferedReader in = request.getReader(); //BufferedReader
 		
-		Gson gson = new Gson();
+		String replyJsonString = in.readLine();
+		System.out.println("요청 데이터 : "+replyJsonString);
+		
+		Gson gson = new Gson(); 
 		//파싱할 때 null 값 오류뜨는지 테스트
-		Reply reply = gson.fromJson(boardJsonString, Reply.class); 
+		Reply reply = gson.fromJson(replyJsonString, Reply.class); 
 		
 		System.out.println("id : "+reply.getId());  //숫자 null은 0으로 떨어짐.
 		System.out.println("boardId : "+reply.getBoardId());
@@ -42,9 +44,10 @@ public class AjaxTest extends HttpServlet {
 		System.out.println("content : "+reply.getContent());
 		System.out.println("createDate : "+reply.getCreateDate()); //문자열은 null
 		
-		//응답 데이터 처리
+		
+		//응답 데이터 처리 (2)
 		String jsonData = "{\"name\" : \"손흥민\", \"sal\" : 100}";
-		PrintWriter out = response.getWriter();
+		PrintWriter out = response.getWriter(); //BufferedWriter
 		out.println(jsonData);
 		out.flush();
 	}

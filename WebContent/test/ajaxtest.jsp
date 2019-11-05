@@ -24,6 +24,7 @@
 	-->
 
 	<script>
+		//자바스크립트 오브젝트
 		var reply = {
 			id: null,
 			boardId: 1,
@@ -33,15 +34,16 @@
 		}
 		
 		console.log(reply);
-		var replyString = JSON.stringify(reply);
+		var replyString = JSON.stringify(reply); //json 문자열로 변경
 		console.log(replyString);
 		
 		function loadDoc() {
 			var xhttp = new XMLHttpRequest();
+			//콜백함수 --> xhttp.send() 된 뒤 요청받은 서버에서 응답이 정상으로 처리되면 콜백!!
 			xhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
 					console.log(this.responseText);
-					var jsonData = JSON.parse(this.responseText);
+					var jsonData = JSON.parse(this.responseText); //Javascript Object 변경
 					console.log(jsonData);
 					document.querySelector("#demo").innerHTML = jsonData.name
 							+ " " + jsonData.sal;

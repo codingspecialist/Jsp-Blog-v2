@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.cos.model.Reply;
+import com.cos.model.Comment;
 import com.google.gson.Gson;
 
 
@@ -36,7 +36,7 @@ public class AjaxTest extends HttpServlet {
 		
 		Gson gson = new Gson(); 
 		//파싱할 때 null 값 오류뜨는지 테스트
-		Reply reply = gson.fromJson(replyJsonString, Reply.class); 
+		Comment reply = gson.fromJson(replyJsonString, Comment.class); 
 		
 		System.out.println("id : "+reply.getId());  //숫자 null은 0으로 떨어짐.
 		System.out.println("boardId : "+reply.getBoardId());

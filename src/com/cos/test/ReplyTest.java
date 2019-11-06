@@ -1,6 +1,5 @@
 package com.cos.test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -10,11 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/test3")
-public class AjaxTest3 extends HttpServlet {
+@WebServlet("/test/reply")
+public class ReplyTest extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-    public AjaxTest3() {
+    public ReplyTest() {
         super();
     }
 
@@ -27,17 +26,17 @@ public class AjaxTest3 extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/plain; charset=UTF-8"); //MIME 타입
 		
-		BufferedReader in = request.getReader();
-		String requestData = in.readLine();
-		System.out.println(requestData);
+		//(1) json 데이터를 받기 , getReader()
+		
+		//(2) json 데이터 sysout으로 출력해보기
+		
+		//(3) json 데이터를 java 오브젝트로 변환 (Gson 라이브러리, fromJson())
+		
+		//(4) java 오브젝트를 sysout으로 출력해보기
 		
 		PrintWriter out = response.getWriter();
-		out.println(50);
+		out.print("ok");
 		out.flush();
 	}
 
 }
-
-
-
-

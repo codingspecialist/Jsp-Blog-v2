@@ -31,7 +31,7 @@ CREATE TABLE board(
 ) engine=InnoDB default charset=utf8;
 
 
-CREATE TABLE reply(
+CREATE TABLE comment(
 	id int auto_increment primary key,
     userId int,
     boardId int,
@@ -41,6 +41,15 @@ CREATE TABLE reply(
     foreign key (boardId) references board (id)
 ) engine=InnoDB default charset=utf8;
 
+CREATE TABLE reply(
+	id int auto_increment primary key,
+    commentId int,
+    userId int,
+    content varchar(300) not null,
+    createDate timestamp,
+    foreign key (commentId) references comment (id),
+    foreign key (userId) references user (id)
+) engine=InnoDB default charset=utf8;
 
 ** 3. Factory 세팅하기
 https://blog.naver.com/codingspecialist/221681388208

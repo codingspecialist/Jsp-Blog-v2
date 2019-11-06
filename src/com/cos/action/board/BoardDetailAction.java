@@ -1,6 +1,7 @@
 package com.cos.action.board;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.cos.action.Action;
 import com.cos.dao.BoardDao;
+import com.cos.dao.CommentDao;
 import com.cos.model.Board;
+import com.cos.model.Comment;
 import com.cos.util.Script;
 import com.cos.util.Utils;
 
@@ -24,6 +27,10 @@ public class BoardDetailAction implements Action{
 		BoardDao dao = new BoardDao();
 		Board board = dao.findById(id);
 		
+		CommentDao commentDao = new CommentDao();
+		
+		List<Comment> comments = commentDao.findByBoardId(id);
+		
 		if(board != null) {
 			//조회수 증가 - 쿠키를 저장해서(1일) 쿠키가 있을 때 새로고침 방지
 			int result = dao.increaseReadCount(id);
@@ -32,6 +39,7 @@ public class BoardDetailAction implements Action{
 				Utils.setPreviewYoutube(board);
 				
 				request.setAttribute("board", board);
+				request.setAttribute("comments", comments);
 				RequestDispatcher dis = request.getRequestDispatcher("board/detail.jsp");
 				dis.forward(request, response);
 			}else {

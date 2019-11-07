@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reply{
-	
+public class Reply{	
 	private ResponseData responseData = new ResponseData(); //DB와 상관 없음.
 	private int id;
 	private int commentId;

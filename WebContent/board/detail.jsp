@@ -37,16 +37,19 @@
 				</div>
 
 				<!-- 댓글 시작 -->
-				<!-- before -->
+				<!--  before -->
 				<div class="comments-area" id="comments-area">
 					<!-- prepend -->
 					<c:forEach var="comment" items="${comments}">
-
-
+						
 						<!-- 댓글 아이템 시작 -->
 						<div class="comment-list" id="comment-id-${comment.id}">
-							<!-- id 동적으로 만들기 -->
-
+							<!-- ID 동적으로 만들기 -->
+							<div class="reply-btn">
+								<button onClick="commentDelete(${comment.id})" class="btn-reply text-uppercase" style="display: inline-block; float: left; margin-right: 10px;">댓글삭제</button>
+								<button onClick="replyListShow(${comment.id})" class="btn-reply text-uppercase" style="display: inline-block; float: left; margin-right: 10px;">댓글보기</button>
+								<button onClick="replyForm(${comment.id})" class="btn-reply text-uppercase">댓글쓰기</button>
+							</div>
 							<div class="single-comment justify-content-between d-flex">
 								<div class="user justify-content-between d-flex">
 									<div class="thumb">
@@ -57,44 +60,16 @@
 											<a href="#">${comment.user.username}</a>
 										</h5>
 										<p class="date">${comment.createDate}</p>
-										<p class="comment">${comment.content}</p>
+										<p class="comment" style='word-break: break-all;'>${comment.content}</p>
 									</div>
-								</div>
-
-								<div class="reply-btn">
-									<button onClick="commentDelete(${comment.id})" class="btn-reply text-uppercase" style="display: inline-block; float: left; margin-right: 10px;">삭제</button>
-									<button onClick="replyListShow(${comment.id})" class="btn-reply text-uppercase" style="display: inline-block; float: left; margin-right: 10px;">보기</button>
-									<button onClick="replyForm(${comment.id})" class="btn-reply text-uppercase">쓰기</button>
 								</div>
 							</div>
 						</div>
 						<!-- 댓글 아이템 끝 -->
-
-
 					</c:forEach>
-					<!-- append -->
-
-					<!-- 대 댓글 아이템 시작 -->
-					<div class="comment-list left-padding">
-						<div class="single-comment justify-content-between d-flex">
-							<div class="user justify-content-between d-flex">
-								<div class="thumb">
-									<img src="img/blog/c2.jpg" alt="">
-								</div>
-								<div class="desc">
-									<h5>
-										<a href="#">Elsie Cunningham</a>
-									</h5>
-									<p class="date">December 4, 2017 at 3:12 pm</p>
-									<p class="comment">Never say goodbye till the end comes!</p>
-								</div>
-							</div>
-							<div class="reply-btn">
-								<button onClick="replyDelete()" class="btn-reply text-uppercase">삭제</button>
-							</div>
-						</div>
-					</div>
-					<!-- 대 댓글 아이템 끝 -->
+					
+					
+					<!--  append -->
 
 				</div>
 				<!-- after -->
@@ -133,7 +108,7 @@
 	    commentItem += "<div class='user justify-content-between d-flex'> ";
 	    commentItem += "<div class='thumb'> <img src='img/blog/c1.jpg' alt=''> </div> ";
 	    commentItem += "<div class='desc'><h5><a href='#'>"+username+"</a></h5> ";
-	    commentItem += "<p class='date'>"+createDate+"</p><p class='comment'>"+content+"</p></div></div> ";
+	    commentItem += "<p class='date'>"+createDate+"</p><p class='comment' style='word-break: break-all;'>"+content+"</p></div></div> ";
 	    commentItem += "<div class='reply-btn'>";
 	    commentItem += "<button onClick='commentDelete("+id+")' class='btn-reply text-uppercase' style='display:inline-block; float:left; margin-right:10px;'>삭제</button>";
 	    commentItem += "<button onClick='replyListShow("+id+")' class='btn-reply text-uppercase'  style='display:inline-block; float:left; margin-right:10px;'>보기</button>";
@@ -143,7 +118,7 @@
 	}
 	
 	function replyItemForm(id, username, content, createDate){
-		var replyItem = "<div class='comment-list left-padding'>";
+		var replyItem = "<div class='comment-list left-padding' id='reply-id-"+id+"'>";
 		replyItem+= "<div class='single-comment justify-content-between d-flex'>";
 		replyItem+= "<div class='user justify-content-between d-flex'>";
 		replyItem+= "<div class='thumb'><img src='img/blog/c2.jpg' alt=''></div>";
@@ -159,8 +134,43 @@
 	//reply 보기 - ajax
 	function replyListShow(comment_id) {
 		//comment_id 로 reply 전부다 select 해서 가져오기
-		
-		//가져와서 replyItemForm() 호출해서 화면에 뿌리기
+		$.ajax({
+			method: "POST",
+			url: "/blog/api/reply?cmd=list",
+			data: comment_id +"",
+			contentType: "text/plain; charset=utf-8",
+			dataType: "json",
+			success: function(replys){ //javascript object
+				for(reply of replys){ 
+					//잘 받았으면 화면에 표시하면 됨.
+					console.log(reply);
+					var reply_et = replyItemForm(reply.id, reply.user.username, reply.content, reply.createDate);
+					$("#comment-id-"+reply.commentId).after(reply_et);
+				}
+			},
+			error: function(xhr){
+				console.log(xhr);
+			}
+		});
+	}
+	
+	//reply 삭제
+	function replyDelete(reply_id){
+		$.ajax({
+			method: "POST",
+			url: "/blog/api/reply?cmd=delete",
+			data: reply_id+"",
+			contentType: "text/plain; charset=utf-8",
+			success: function(result){
+				if(result === "ok"){
+					//해당 엘레멘트 삭제
+					$("#reply-id-"+reply_id).remove();
+				}
+			},
+			error: function(xhr){
+				console.log(xhr);
+			}
+		});
 	}
 	
 	//comment 쓰기
@@ -176,7 +186,7 @@
 			success: function(comment){
 				//화면에 적용
 				var comment_et = commentItemForm(comment.id, comment.user.username, comment.content, comment.createDate);
-				$("#comments-area").append(comment_et);
+				$("#comments-area").prepend(comment_et);
 				//입력폼 초기화하기
 				$("#content").val("");
 				

@@ -8,7 +8,9 @@ public class ReplyFactory {
 		if(cmd.equals("write")) {
 			
 		}else if(cmd.equals("delete")) {
-			
+			return new ReplyDeleteAction();
+		}else if(cmd.equals("list")) {
+			return new ReplyListAction();
 		}
 		return null;
 	}

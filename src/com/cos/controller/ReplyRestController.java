@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.cos.action.Action;
 import com.cos.action.comment.CommentFactory;
+import com.cos.action.reply.ReplyFactory;
 
 @WebServlet("/api/reply")
 public class ReplyRestController extends HttpServlet {
@@ -25,7 +26,7 @@ public class ReplyRestController extends HttpServlet {
 			return;
 		}
 		
-		Action action = CommentFactory.getAction(cmd);
+		Action action = ReplyFactory.getAction(cmd);
 		if(action != null) {
 			action.execute(request, response);
 		}

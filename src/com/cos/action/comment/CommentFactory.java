@@ -7,6 +7,8 @@ public class CommentFactory {
 	
 		if(cmd.equals("delete")) {
 			return new CommentDeleteAction();
+		}if(cmd.equals("write")) {
+			return new CommentWriteAction();
 		}
 		return null;
 	}

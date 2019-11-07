@@ -9,11 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+public class Reply{
+	
 	private ResponseData responseData = new ResponseData(); //DB와 상관 없음.
-	private int id; //PK
-	private int userId; //FK
-	private int boardId; //FK
+	private int id;
+	private int commentId;
+	private int userId;
 	private String content;
 	private Timestamp createDate;
 	private User user = new User(); //DB와 상관 없음.

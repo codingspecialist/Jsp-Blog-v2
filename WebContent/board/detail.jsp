@@ -37,11 +37,12 @@
 				</div>
 
 				<!-- 댓글 시작 -->
-				<div class="comments-area">
-
+				<!-- before -->
+				<div class="comments-area" id="comments-area">
+					<!-- prepend -->
 					<c:forEach var="comment" items="${comments}">
-					
-					
+
+
 						<!-- 댓글 아이템 시작 -->
 						<div class="comment-list" id="comment-id-${comment.id}">
 							<!-- id 동적으로 만들기 -->
@@ -59,21 +60,19 @@
 										<p class="comment">${comment.content}</p>
 									</div>
 								</div>
-						
+
 								<div class="reply-btn">
-									<button onClick="commentDelete(${comment.id})" class="btn-reply text-uppercase" style="display:inline-block; float:left; margin-right:10px;">삭제</button>
-									<button onClick="replyListShow(${comment.id})" class="btn-reply text-uppercase"  style="display:inline-block; float:left; margin-right:10px;">보기</button>
+									<button onClick="commentDelete(${comment.id})" class="btn-reply text-uppercase" style="display: inline-block; float: left; margin-right: 10px;">삭제</button>
+									<button onClick="replyListShow(${comment.id})" class="btn-reply text-uppercase" style="display: inline-block; float: left; margin-right: 10px;">보기</button>
 									<button onClick="replyForm(${comment.id})" class="btn-reply text-uppercase">쓰기</button>
 								</div>
 							</div>
-
-							<!-- Reply 쓰기 -->
-
 						</div>
 						<!-- 댓글 아이템 끝 -->
-						
-						
+
+
 					</c:forEach>
+					<!-- append -->
 
 					<!-- 대 댓글 아이템 시작 -->
 					<div class="comment-list left-padding">
@@ -90,20 +89,27 @@
 									<p class="comment">Never say goodbye till the end comes!</p>
 								</div>
 							</div>
+							<div class="reply-btn">
+								<button onClick="replyDelete()" class="btn-reply text-uppercase">삭제</button>
+							</div>
 						</div>
 					</div>
 					<!-- 대 댓글 아이템 끝 -->
+
 				</div>
+				<!-- after -->
 				<!-- 댓글 끝 -->
 
 				<!-- 댓글 쓰기 시작 -->
 				<div class="comment-form" style="margin-top: 0px;">
 					<h4 style="margin-bottom: 20px">Leave a Comment</h4>
 					<form id="comment-submit">
+						<input type="hidden" name="userId" value="${sessionScope.user.id}" /> <input type="hidden" name="boardId" value="${board.id}" />
 						<div class="form-group">
-							<textarea style="height: 60px" class="form-control mb-10" rows="2" name="content" placeholder="Messege" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'" required=""></textarea>
+							<textarea id="content" style="height: 60px" class="form-control mb-10" rows="2" name="content" placeholder="Messege" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'"
+								required=""></textarea>
 						</div>
-						<a href="#" class="primary-btn submit_btn">Post Comment</a>
+						<button type="button" onClick="commentWrite()" class="primary-btn submit_btn">Post Comment</button>
 					</form>
 				</div>
 				<!-- 댓글 쓰기 끝 -->
@@ -113,6 +119,7 @@
 		</div>
 	</div>
 </section>
+
 <!--================Blog Area =================-->
 
 <%@ include file="/include/footer.jsp"%>
@@ -120,28 +127,89 @@
 <!--================Comment Script =================-->
 <script>
 	
+	function commentItemForm(id, username, content, createDate){
+	    var commentItem = "<div class='comment-list' id='comment-id-"+id+"'> ";
+	    commentItem += "<div class='single-comment justify-content-between d-flex'> ";
+	    commentItem += "<div class='user justify-content-between d-flex'> ";
+	    commentItem += "<div class='thumb'> <img src='img/blog/c1.jpg' alt=''> </div> ";
+	    commentItem += "<div class='desc'><h5><a href='#'>"+username+"</a></h5> ";
+	    commentItem += "<p class='date'>"+createDate+"</p><p class='comment'>"+content+"</p></div></div> ";
+	    commentItem += "<div class='reply-btn'>";
+	    commentItem += "<button onClick='commentDelete("+id+")' class='btn-reply text-uppercase' style='display:inline-block; float:left; margin-right:10px;'>삭제</button>";
+	    commentItem += "<button onClick='replyListShow("+id+")' class='btn-reply text-uppercase'  style='display:inline-block; float:left; margin-right:10px;'>보기</button>";
+	    commentItem += "<button onClick='replyForm("+id+")' class='btn-reply text-uppercase'>쓰기</button></div></div></div>";
+	    console.log(commentItem);
+	    return commentItem;
+	}
+	
+	function replyItemForm(id, username, content, createDate){
+		var replyItem = "<div class='comment-list left-padding'>";
+		replyItem+= "<div class='single-comment justify-content-between d-flex'>";
+		replyItem+= "<div class='user justify-content-between d-flex'>";
+		replyItem+= "<div class='thumb'><img src='img/blog/c2.jpg' alt=''></div>";
+		replyItem+= "<div class='desc'><h5><a href='#'>"+username+"</a></h5>";
+		replyItem+= "<p class='date'>"+createDate+"</p>";
+		replyItem+= "<p class='comment'>"+content+"</p>";
+		replyItem+= "</div></div><div class='reply-btn'><button onClick='replyDelete("+id+")' class='btn-reply text-uppercase'>삭제</button>";
+		replyItem+= "</div></div></div>";
+		
+		return replyItem;
+	}
+	
+	//reply 보기 - ajax
+	function replyListShow(comment_id) {
+		//comment_id 로 reply 전부다 select 해서 가져오기
+		
+		//가져와서 replyItemForm() 호출해서 화면에 뿌리기
+	}
+	
+	//comment 쓰기
+	function commentWrite(){
+		var comment_submit_string = $("#comment-submit").serialize();
+		$.ajax({
+			method: "POST",
+			url: "/blog/api/comment?cmd=write",
+			data: comment_submit_string,
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			dataType: "json",
+			
+			success: function(comment){
+				//화면에 적용
+				var comment_et = commentItemForm(comment.id, comment.user.username, comment.content, comment.createDate);
+				$("#comments-area").append(comment_et);
+				//입력폼 초기화하기
+				$("#content").val("");
+				
+			},
+			error: function(xhr){
+				console.log(xhr.status);
+				console.log(xhr);
+			}
+			
+		});
+		
+	}
+	
+	
 	//comment 삭제
 	function commentDelete(comment_id){ //자바스크립트는 하이픈 사용 불가
-
 		$.ajax({
 			method: "POST",
 			url: "/blog/api/comment?cmd=delete",
 			data: comment_id+"",
 			contentType: "text/plain; charset=utf-8", //MIME 타입
-			success: function(r){
-				console.log(r);
+			success: function(result){
+				console.log(result);
 				//해당 엘레멘트(DOM)을 찾아서 remove() 해주면 됨.
-				$("#comment-id-"+comment_id).remove();
+				if(result === "ok"){
+					$("#comment-id-"+comment_id).remove();
+				}
+				
 			},
 			error: function(xhr){
 				console.log(xhr.status);
 			}
 		});
-	}
-
-	//reply 보기 - ajax
-	function replyListShow() {
-
 	}
 
 	//reply Form 만들기  - 화면에 로딩!!

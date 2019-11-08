@@ -36,19 +36,39 @@
 					<hr />
 				</div>
 
+				<!-- 댓글 쓰기 시작 -->
+				<div class="comment-form" style="margin-top: 0px;">
+					<h4 style="margin-bottom: 20px">Leave a Comment</h4>
+					<form id="comment-submit">
+						<input type="hidden" name="userId" value="${sessionScope.user.id}" /> <input type="hidden" name="boardId" value="${board.id}" />
+						<div class="form-group">
+							<textarea id="comment-content" style="height: 60px" class="form-control mb-10" rows="2" name="content" placeholder="Messege" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'Messege'" required=""></textarea>
+						</div>
+						<button type="button" onClick="commentWrite()" class="primary-btn submit_btn">Post Comment</button>
+					</form>
+				</div>
+				<!-- 댓글 쓰기 끝 -->  
+
 				<!-- 댓글 시작 -->
 				<!--  before -->
 				<div class="comments-area" id="comments-area">
 					<!-- prepend -->
 					<c:forEach var="comment" items="${comments}">
-						
+
 						<!-- 댓글 아이템 시작 -->
 						<div class="comment-list" id="comment-id-${comment.id}">
 							<!-- ID 동적으로 만들기 -->
-							<div class="reply-btn">
-								<button onClick="commentDelete(${comment.id})" class="btn-reply text-uppercase" style="display: inline-block; float: left; margin-right: 10px;">댓글삭제</button>
-								<button onClick="replyListShow(${comment.id})" class="btn-reply text-uppercase" style="display: inline-block; float: left; margin-right: 10px;">댓글보기</button>
-								<button onClick="replyForm(${comment.id})" class="btn-reply text-uppercase">댓글쓰기</button>
+							<div class="reply-btn float-right">
+								<button onClick="commentDelete(${comment.id})" class="btn-reply text-uppercase">
+									<i class="fa fa-trash" style="font-size: 20px;"></i>
+								</button>
+								<button onClick="replyListShow(${comment.id})" class="btn-reply text-uppercase">
+									<i class="fa fa-file" style="font-size: 18px;"></i>
+								</button>
+								<button onClick="replyWriteShow(${comment.id})" class="btn-reply text-uppercase">
+									<i class="fa fa-edit" style="font-size: 15px;"></i>
+								</button>
 							</div>
 							<div class="single-comment justify-content-between d-flex">
 								<div class="user justify-content-between d-flex">
@@ -65,29 +85,18 @@
 								</div>
 							</div>
 						</div>
+
 						<!-- 댓글 아이템 끝 -->
 					</c:forEach>
-					
-					
+
+
 					<!--  append -->
 
 				</div>
 				<!-- after -->
 				<!-- 댓글 끝 -->
 
-				<!-- 댓글 쓰기 시작 -->
-				<div class="comment-form" style="margin-top: 0px;">
-					<h4 style="margin-bottom: 20px">Leave a Comment</h4>
-					<form id="comment-submit">
-						<input type="hidden" name="userId" value="${sessionScope.user.id}" /> <input type="hidden" name="boardId" value="${board.id}" />
-						<div class="form-group">
-							<textarea id="content" style="height: 60px" class="form-control mb-10" rows="2" name="content" placeholder="Messege" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'"
-								required=""></textarea>
-						</div>
-						<button type="button" onClick="commentWrite()" class="primary-btn submit_btn">Post Comment</button>
-					</form>
-				</div>
-				<!-- 댓글 쓰기 끝 -->
+
 			</div>
 
 			<div class="col-lg-2"></div>
@@ -109,10 +118,11 @@
 	    commentItem += "<div class='thumb'> <img src='img/blog/c1.jpg' alt=''> </div> ";
 	    commentItem += "<div class='desc'><h5><a href='#'>"+username+"</a></h5> ";
 	    commentItem += "<p class='date'>"+createDate+"</p><p class='comment' style='word-break: break-all;'>"+content+"</p></div></div> ";
-	    commentItem += "<div class='reply-btn'>";
-	    commentItem += "<button onClick='commentDelete("+id+")' class='btn-reply text-uppercase' style='display:inline-block; float:left; margin-right:10px;'>삭제</button>";
-	    commentItem += "<button onClick='replyListShow("+id+")' class='btn-reply text-uppercase'  style='display:inline-block; float:left; margin-right:10px;'>보기</button>";
-	    commentItem += "<button onClick='replyForm("+id+")' class='btn-reply text-uppercase'>쓰기</button></div></div></div>";
+	    commentItem += "<div class='reply-btn float-right'>";
+	    commentItem += "<button onClick='commentDelete("+id+")' class='btn-reply text-uppercase'><i class='fa fa-trash' style='font-size:20px;'></i></button>";
+	    commentItem += "<button onClick='replyListShow("+id+")' class='btn-reply text-uppercase'><i class='fa fa-file' style='font-size:18px;'></i></button>";
+	    commentItem += "<button onClick='replyWriteShow("+id+")' class='btn-reply text-uppercase'><i class='fa fa-edit' style='font-size:15px;'></i></button></div>";
+	    commentItem += "</div></div>";
 	    console.log(commentItem);
 	    return commentItem;
 	}
@@ -125,10 +135,78 @@
 		replyItem+= "<div class='desc'><h5><a href='#'>"+username+"</a></h5>";
 		replyItem+= "<p class='date'>"+createDate+"</p>";
 		replyItem+= "<p class='comment'>"+content+"</p>";
-		replyItem+= "</div></div><div class='reply-btn'><button onClick='replyDelete("+id+")' class='btn-reply text-uppercase'>삭제</button>";
+		replyItem+= "</div></div><div class='reply-btn float-right'><button onClick='replyDelete("+id+")' class='btn-reply text-uppercase'><i class='fa fa-trash' style='font-size:20px;'></i></button>";
 		replyItem+= "</div></div></div>";
 		
 		return replyItem;
+	}
+	
+	//comment 쓰기
+	function commentWrite(){
+		var comment_submit_string = $("#comment-submit").serialize();
+		$.ajax({
+			method: "POST",
+			url: "/blog/api/comment?cmd=write",
+			data: comment_submit_string,
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			dataType: "json",
+			
+			success: function(comment){
+				//화면에 적용
+				var comment_et = commentItemForm(comment.id, comment.user.username, comment.content, comment.createDate);
+				$("#comments-area").prepend(comment_et);
+				//입력폼 초기화하기
+				$("#comment-content").val("");
+				
+			},
+			error: function(xhr){
+				console.log(xhr.status);
+				console.log(xhr);
+			}
+			
+		});
+		
+	}
+	
+	//reply 쓰기
+	function replyWrite(comment_id){
+		var reply_submit_string = $("#reply-submit-"+comment_id).serialize();
+		console.log("reply_submit_string : "+reply_submit_string);
+		
+		$.ajax({
+			method: "POST",
+			url: "/blog/api/reply?cmd=write",
+			data: reply_submit_string,
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			dataType: "json",
+			
+			success: function(reply){
+				//화면에 적용
+				var reply_et = replyItemForm(reply.id, reply.user.username, reply.content, reply.createDate);
+				$("#comment-id-"+reply.commentId).after(reply_et);
+				$("#reply-form-"+comment_id).remove();
+			},
+			error: function(xhr){
+				console.log(xhr.status);
+				console.log(xhr);
+			}
+			
+		});
+	}
+	
+	//reply Form 만들기  - 화면에 로딩!!
+	function replyWriteShow(comment_id) {
+		var comment_form_inner = "<h4 style='margin-bottom:20px'>Leave a Reply</h4><form id='reply-submit-"+comment_id+"'><input type='hidden' name='commentId' value='"+comment_id+"' /><input type='hidden' name='userId' value='${sessionScope.user.id}' /><div class='form-group'><textarea style='height:60px' class='form-control mb-10' rows='2' name='content' placeholder='Messege' required=''></textarea></div><button type='button' onClick='replyWrite("+comment_id+")' class='primary-btn submit_btn'>Post Comment</button></form>";
+
+		var reply_form = document.createElement("div"); //div 빈 박스 생성
+		reply_form.id = "reply-form-"+comment_id;
+		reply_form.className = "comment-form"; //div에 클래스 이름을 주고
+		reply_form.style = "margin-top:0px"; //div에 style을 준다.
+
+		reply_form.innerHTML = comment_form_inner;
+		console.log(reply_form);
+
+		$("#comment-id-"+comment_id).append(reply_form); //after와 append, before와 prepend 
 	}
 	
 	//reply 보기 - ajax
@@ -173,34 +251,6 @@
 		});
 	}
 	
-	//comment 쓰기
-	function commentWrite(){
-		var comment_submit_string = $("#comment-submit").serialize();
-		$.ajax({
-			method: "POST",
-			url: "/blog/api/comment?cmd=write",
-			data: comment_submit_string,
-			contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			dataType: "json",
-			
-			success: function(comment){
-				//화면에 적용
-				var comment_et = commentItemForm(comment.id, comment.user.username, comment.content, comment.createDate);
-				$("#comments-area").prepend(comment_et);
-				//입력폼 초기화하기
-				$("#content").val("");
-				
-			},
-			error: function(xhr){
-				console.log(xhr.status);
-				console.log(xhr);
-			}
-			
-		});
-		
-	}
-	
-	
 	//comment 삭제
 	function commentDelete(comment_id){ //자바스크립트는 하이픈 사용 불가
 		$.ajax({
@@ -222,22 +272,7 @@
 		});
 	}
 
-	//reply Form 만들기  - 화면에 로딩!!
 
-	function replyForm(comment_id) {
-		var comment_form_inner = "<h4 style='margin-bottom:20px'>Leave a Reply</h4><form id='reply-submit'><div class='form-group'><textarea style='height:60px' class='form-control mb-10' rows='2' name='content' placeholder='Messege' required=''></textarea></div><button class='primary-btn submit_btn'>Post Comment</button></form>";
-
-		//<div class="comment-form" style="margin-top:0px;"></div>
-		var comment_form = document.createElement("div"); //div 빈 박스 생성
-		comment_form.className = "comment-form"; //div에 클래스 이름을 주고
-		comment_form.style = "margin-top:0px"; //div에 style을 준다.
-
-		comment_form.innerHTML = comment_form_inner;
-		console.log(comment_form);
-
-		var comment_list = document.querySelector("#comment-id-"+comment_id);
-		comment_list.append(comment_form); //after와 append, before와 prepend 
-	}
 </script>
 </body>
 </html>

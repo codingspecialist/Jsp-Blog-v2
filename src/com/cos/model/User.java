@@ -2,6 +2,8 @@ package com.cos.model;
 
 import java.sql.Timestamp;
 
+import com.cos.test.OAuthUser;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User{
 	private int id;
 	//private String userProfile; //이미지 경로 (파일 업로드) uuid
 	private String username;

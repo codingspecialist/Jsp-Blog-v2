@@ -11,8 +11,6 @@
 
 <%@ include file="/include/nav.jsp"%>
 
-
-
 <c:if test="${empty sessionScope.user}">
 	<script>
 		alert('인증이 안된 유저입니다.');

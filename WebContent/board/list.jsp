@@ -32,7 +32,8 @@
 					<!-- 페이징하기 -->
 					<nav class="blog-pagination justify-content-center d-flex">
 						<ul class="pagination">
-							<li class="page-item disabled"><a href="/blog/board?cmd=list&page=${param.page-1}" class="page-link" aria-label="Previous"> <span aria-hidden="true"> <span
+						    <!-- page-item disabled -->
+							<li class="page-item"><a href="/blog/board?cmd=list&page=${param.page-1}" class="page-link" aria-label="Previous"> <span aria-hidden="true"> <span
 										class="lnr lnr-chevron-left"></span>
 								</span>
 							</a></li>

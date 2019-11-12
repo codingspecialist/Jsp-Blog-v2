@@ -157,6 +157,7 @@ public class BoardDao {
 				
 				//(2) board에 user객체에 username 저장 (추후: userProfile 저장)
 				board.getUser().setUsername(rs.getString("u.username")); 
+				board.getUser().setUserProfile(rs.getString("u.userProfile"));
 				
 				boards.add(board); //컬렉션에 담아주기
 			}
@@ -191,6 +192,7 @@ public class BoardDao {
 				board.setCreateDate(rs.getTimestamp("b.createDate"));
 				//(3) board에 user객체에 username 저장 (추후: userProfile 저장)
 				board.getUser().setUsername(rs.getString("u.username"));
+				board.getUser().setUserProfile(rs.getString("u.userProfile"));
 				return board;
 			}
 		} catch (Exception e) {

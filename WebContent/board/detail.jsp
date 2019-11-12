@@ -25,7 +25,7 @@
 									<p>${board.createDate}</p>
 								</div>
 								<div class="d-flex">
-									<img src="/blog/img/blog/user-img.jpg" alt="">
+									<img src="${board.user.userProfile}" width="60px" height="60px" style="border-radius:30px;" />
 								</div>
 							</div>
 						</div>
@@ -73,7 +73,7 @@
 							<div class="single-comment justify-content-between d-flex">
 								<div class="user justify-content-between d-flex">
 									<div class="thumb">
-										<img src="img/blog/c1.jpg" alt="">
+										<img src="${comment.user.userProfile}" width="60px" height="60px" style="border-radius:30px;" />
 									</div>
 									<div class="desc">
 										<h5>
@@ -111,11 +111,11 @@
 <!--================Comment Script =================-->
 <script>
 	
-	function commentItemForm(id, username, content, createDate){
+	function commentItemForm(id, username, content, createDate, userProfile){
 	    var commentItem = "<div class='comment-list' id='comment-id-"+id+"'> ";
 	    commentItem += "<div class='single-comment justify-content-between d-flex'> ";
 	    commentItem += "<div class='user justify-content-between d-flex'> ";
-	    commentItem += "<div class='thumb'> <img src='img/blog/c1.jpg' alt=''> </div> ";
+	    commentItem += "<div class='thumb'> <img src='"+userProfile+"' width='60px' height='60px' style='border-radius:30px;' /> </div> ";
 	    commentItem += "<div class='desc'><h5><a href='#'>"+username+"</a></h5> ";
 	    commentItem += "<p class='date'>"+createDate+"</p><p class='comment' style='word-break: break-all;'>"+content+"</p></div></div> ";
 	    commentItem += "<div class='reply-btn float-right'>";
@@ -127,11 +127,11 @@
 	    return commentItem;
 	}
 	
-	function replyItemForm(id, username, content, createDate){
+	function replyItemForm(id, username, content, createDate, userProfile){
 		var replyItem = "<div class='comment-list left-padding' id='reply-id-"+id+"'>";
 		replyItem+= "<div class='single-comment justify-content-between d-flex'>";
 		replyItem+= "<div class='user justify-content-between d-flex'>";
-		replyItem+= "<div class='thumb'><img src='img/blog/c2.jpg' alt=''></div>";
+		replyItem += "<div class='thumb'> <img src='"+userProfile+"' width='60px' height='60px' style='border-radius:30px;' /> </div> ";
 		replyItem+= "<div class='desc'><h5><a href='#'>"+username+"</a></h5>";
 		replyItem+= "<p class='date'>"+createDate+"</p>";
 		replyItem+= "<p class='comment'>"+content+"</p>";
@@ -153,7 +153,7 @@
 			
 			success: function(comment){
 				//화면에 적용
-				var comment_et = commentItemForm(comment.id, comment.user.username, comment.content, comment.createDate);
+				var comment_et = commentItemForm(comment.id, comment.user.username, comment.content, comment.createDate, comment.user.userProfile);
 				$("#comments-area").prepend(comment_et);
 				//입력폼 초기화하기
 				$("#comment-content").val("");
@@ -182,7 +182,7 @@
 			
 			success: function(reply){
 				//화면에 적용
-				var reply_et = replyItemForm(reply.id, reply.user.username, reply.content, reply.createDate);
+				var reply_et = replyItemForm(reply.id, reply.user.username, reply.content, reply.createDate, reply.user.userProfile);
 				$("#comment-id-"+reply.commentId).after(reply_et);
 				$("#reply-form-"+comment_id).remove();
 			},
@@ -222,7 +222,7 @@
 				for(reply of replys){ 
 					//잘 받았으면 화면에 표시하면 됨.
 					console.log(reply);
-					var reply_et = replyItemForm(reply.id, reply.user.username, reply.content, reply.createDate);
+					var reply_et = replyItemForm(reply.id, reply.user.username, reply.content, reply.createDate, reply.user.userProfile);
 					$("#comment-id-"+reply.commentId).after(reply_et);
 				}
 			},

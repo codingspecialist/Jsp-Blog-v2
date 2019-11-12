@@ -53,11 +53,11 @@
 							</c:choose>
 							
 						</ul>
-						<ul class="nav navbar-nav navbar-right header_social ml-auto">
-							<li class="nav-item"><a href="#"><i class="fa fa-facebook"></i></a></li>
-							<li class="nav-item"><a href="#"><i class="fa fa-twitter"></i></a></li>
-							<li class="nav-item"><a href="#"><i class="fa fa-dribbble"></i></a></li>
-							<li class="nav-item"><a href="#"><i class="fa fa-behance"></i></a></li>
+						<!-- nav의 social login 부분 -->
+						<ul class="nav navbar-nav navbar-right ml-auto">
+							<c:if test="${!empty sessionScope.user}">
+								<li class="nav-item"><a href="/blog/user/userProfileForm.jsp"><img style="border-radius:20px" src="${sessionScope.user.userProfile}" width="40px" height="40px" /></a></li>
+							</c:if>
 						</ul>
 					</div>
 				</div>

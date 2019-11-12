@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User{
 	private int id;
-	//private String userProfile; //이미지 경로 (파일 업로드) uuid
+	private String userProfile; //이미지 경로 (파일 업로드) uuid
 	private String username;
 	private String password;
 	private String email;

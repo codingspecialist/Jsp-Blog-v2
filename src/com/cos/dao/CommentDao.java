@@ -19,7 +19,7 @@ public class CommentDao {
 	public Comment findByMaxId() {
 		
 		StringBuffer sb = new StringBuffer();
-		sb.append("select c.id, c.userId, c.boardId, c.content, c.createDate, u.username ");
+		sb.append("select c.id, c.userId, c.boardId, c.content, c.createDate, u.username, u.userProfile ");
 		sb.append("from comment c, user u ");
 		sb.append("where c.userId = u.id ");
 		sb.append("and c.id = (select max(id) from comment) ");
@@ -38,7 +38,7 @@ public class CommentDao {
 				comment.setContent(rs.getString("c.content"));
 				comment.setCreateDate(rs.getTimestamp("c.createDate"));
 				comment.getUser().setUsername(rs.getString("u.username"));
-				
+				comment.getUser().setUserProfile(rs.getString("u.userProfile")); //추가
 				return comment;
 			}
 		} catch (Exception e) {
@@ -96,7 +96,7 @@ public class CommentDao {
 	public List<Comment> findByBoardId(int boardId){
 		
 		StringBuffer sb = new StringBuffer();
-		sb.append("SELECT c.id, c.userId, c.boardId, c.content, c.createDate,u.username ");
+		sb.append("SELECT c.id, c.userId, c.boardId, c.content, c.createDate,u.username, u.userProfile ");
 		sb.append("FROM comment c, user u ");
 		sb.append("WHERE c.userId = u.id ");
 		sb.append("and boardId = ? ORDER BY c.id DESC");
@@ -120,6 +120,7 @@ public class CommentDao {
 				comment.setContent(rs.getString("c.content"));
 				comment.setCreateDate(rs.getTimestamp("c.createDate"));
 				comment.getUser().setUsername(rs.getString("u.username"));
+				comment.getUser().setUserProfile(rs.getString("u.userProfile")); //추가
 				comments.add(comment); //컬렉션에 comment 담기
 			}
 			

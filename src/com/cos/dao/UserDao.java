@@ -33,7 +33,8 @@ public class UserDao {
 				user.setEmail(rs.getString("email"));
 				user.setAddress(rs.getString("address")); // 주소 추가
 				user.setCreateDate(rs.getTimestamp("createDate"));
-
+				user.setUserProfile(rs.getString("userProfile")); //사진 추가
+				
 				return user;
 			}
 		} catch (Exception e) {
@@ -45,7 +46,7 @@ public class UserDao {
 		return null;
 	}
 
-	//2
+	//2-1
 	public int update(User user) {
 
 		final String SQL = "UPDATE user SET password = ?, address = ? WHERE id = ?";
@@ -58,6 +59,28 @@ public class UserDao {
 			pstmt.setString(1, user.getPassword());
 			pstmt.setString(2, user.getAddress());
 			pstmt.setInt(3, user.getId());
+			int result = pstmt.executeUpdate(); // 변경된 튜플의 개수를 리턴
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, pstmt);
+		}
+
+		return -1;
+	}
+	
+	//2-2 update 오버로딩 (userProfile 업로드)
+	public int update(String userProfile, int id) {
+
+		final String SQL = "UPDATE user SET userProfile = ? WHERE id = ?";
+
+		conn = DBConn.getConnection();
+
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, userProfile);
+			pstmt.setInt(2, id);
 			int result = pstmt.executeUpdate(); // 변경된 튜플의 개수를 리턴
 			return result;
 		} catch (Exception e) {
@@ -92,6 +115,8 @@ public class UserDao {
 
 		return -1;
 	}
+	
+
 
 	//4
 	public int findByUsernameAndPassword(String username, String password) {

@@ -85,7 +85,6 @@
 								</div>
 							</div>
 						</div>
-
 						<!-- 댓글 아이템 끝 -->
 					</c:forEach>
 
@@ -170,6 +169,7 @@
 	
 	//reply 쓰기
 	function replyWrite(comment_id){
+		
 		var reply_submit_string = $("#reply-submit-"+comment_id).serialize();
 		console.log("reply_submit_string : "+reply_submit_string);
 		
@@ -196,22 +196,37 @@
 	
 	//reply Form 만들기  - 화면에 로딩!!
 	function replyWriteShow(comment_id) {
+		var check = document.querySelector("#reply-form-"+comment_id);
+		if(check != null){
+			$("#reply-form-"+comment_id).remove();
+			return;
+		}
+		
 		var comment_form_inner = "<h4 style='margin-bottom:20px'>Leave a Reply</h4><form id='reply-submit-"+comment_id+"'><input type='hidden' name='commentId' value='"+comment_id+"' /><input type='hidden' name='userId' value='${sessionScope.user.id}' /><div class='form-group'><textarea style='height:60px' class='form-control mb-10' rows='2' name='content' placeholder='Messege' required=''></textarea></div><button type='button' onClick='replyWrite("+comment_id+")' class='primary-btn submit_btn'>Post Comment</button></form>";
-
+		
 		var reply_form = document.createElement("div"); //div 빈 박스 생성
 		reply_form.id = "reply-form-"+comment_id;
 		reply_form.className = "comment-form"; //div에 클래스 이름을 주고
 		reply_form.style = "margin-top:0px"; //div에 style을 준다.
 
 		reply_form.innerHTML = comment_form_inner;
-		console.log(reply_form);
 
 		$("#comment-id-"+comment_id).append(reply_form); //after와 append, before와 prepend 
 	}
 	
 	//reply 보기 - ajax
 	function replyListShow(comment_id) {
-		//comment_id 로 reply 전부다 select 해서 가져오기
+		
+		// 댓글 리스트 보기 막기 시작
+		var check = $("#comment-id-"+comment_id).next().attr('id');
+		
+		if(check != undefined){
+			if(check.indexOf("reply") != -1){
+				return;
+			}
+		}
+		// 댓글 리스트 보기 막기 끝
+		
 		$.ajax({
 			method: "POST",
 			url: "/blog/api/reply?cmd=list",
@@ -221,7 +236,6 @@
 			success: function(replys){ //javascript object
 				for(reply of replys){ 
 					//잘 받았으면 화면에 표시하면 됨.
-					console.log(reply);
 					var reply_et = replyItemForm(reply.id, reply.user.username, reply.content, reply.createDate, reply.user.userProfile);
 					$("#comment-id-"+reply.commentId).after(reply_et);
 				}

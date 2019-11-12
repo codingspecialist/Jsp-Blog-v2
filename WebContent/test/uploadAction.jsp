@@ -1,3 +1,5 @@
+<%@page import="java.io.BufferedReader"%>
+<%@page import="java.util.Enumeration"%>
 <%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
 <%@page import="com.oreilly.servlet.MultipartRequest"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -15,6 +17,15 @@
 </head>
 <body>
 <%
+/* 	Enumeration<String> em = request.getHeaderNames();
+	
+	while(em.hasMoreElements()){
+	    String name = em.nextElement() ;
+	    String val = request.getHeader(name) ;
+	     
+	    System.out.println(name + " : " + val) ;
+	}
+ */
 	String path = application.getRealPath("media");
 	
  	MultipartRequest multi = new MultipartRequest(

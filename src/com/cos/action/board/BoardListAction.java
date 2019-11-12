@@ -24,16 +24,22 @@ public class BoardListAction implements Action{
 		
 		//page <= 0 혹은 page > maxNum 버튼 비활성화
 		
-		
-		
 		if(page <= 0) {
 			page = 1;
 		}
 		
 		BoardDao bDao = new BoardDao();
-		List<Board> boards = bDao.findAll(page); //paging 하기
+		List<Board> boards = null;
 		List<Board> hotBoards = bDao.findOrderByReadCountDesc();
 		
+		if(request.getParameter("search") == null || request.getParameter("search").equals("")) {
+			boards = bDao.findAll(page); //paging 하기
+			request.setAttribute("search", null);
+		}else {
+			String search = request.getParameter("search");
+			boards = bDao.findAll(page, search); //paging 하기
+			request.setAttribute("search", search);
+		}
 		Utils.setPreviewImg(boards); //이미지를 previewImg에 저장
 		Utils.setPreviewContent(boards); //이미지 태그 제거
 		Utils.setPreviewImg(hotBoards); //이미지를 previewImg에 저장(추가)

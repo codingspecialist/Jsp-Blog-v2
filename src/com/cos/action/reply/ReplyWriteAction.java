@@ -21,9 +21,9 @@ public class ReplyWriteAction implements Action{
 		int userId = Integer.parseInt(request.getParameter("userId"));
 		String content = request.getParameter("content");
 		
-		System.out.println(commentId);
-		System.out.println(userId);
-		System.out.println(content);
+		//System.out.println(commentId);
+		//System.out.println(userId);
+		//System.out.println(content);
 		
 		Reply replyForm = new Reply();
 		replyForm.setCommentId(commentId);
@@ -44,7 +44,7 @@ public class ReplyWriteAction implements Action{
 			Gson gson = new Gson();
 			String replyJson = gson.toJson(reply);
 
-			System.out.println("(1) replyJson : "+replyJson);
+			//System.out.println("(1) replyJson : "+replyJson);
 			// 데이터 응답
 			response.setContentType("application/json; charset=UTF-8");
 			PrintWriter out = response.getWriter();

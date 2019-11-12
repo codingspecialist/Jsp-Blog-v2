@@ -32,12 +32,12 @@ public class UserLoginAction implements Action{
 		if(result == 1) {
 			//쿠키 저장
 			if(rememberMe != null) {
-				System.out.println(TAG+"쿠키 저장");
+				//System.out.println(TAG+"쿠키 저장");
 				Cookie c = new Cookie("username", username);
 				c.setMaxAge(6000); //100분
 				response.addCookie(c);
 			}else {
-				System.out.println(TAG+"쿠키 삭제");
+				//System.out.println(TAG+"쿠키 삭제");
 				Cookie c = new Cookie("username", null);
 				c.setMaxAge(0);
 				response.addCookie(c);

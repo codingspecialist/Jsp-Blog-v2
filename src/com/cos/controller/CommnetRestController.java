@@ -22,7 +22,6 @@ public class CommnetRestController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String cmd = request.getParameter("cmd");
 		
-		System.out.println("2. cmd : "+cmd);
 		if(cmd == null || cmd.equals("")) {
 			return;
 		}

@@ -203,6 +203,45 @@ public class BoardDao {
 		
 		return null;
 	}
+	
+	public List<Board> findAll(int page, String search){
+		//(1) 조인 쿼리로 변경
+		final String SQL = "SELECT * FROM board b, user u WHERE b.userId = u.id and (b.content like ? or b.title like ?) ORDER BY b.id DESC limit ?, 3";
+		conn = DBConn.getConnection();
+		
+		try {
+			List<Board> boards = new ArrayList<>();
+			
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, "%"+search+"%");
+			pstmt.setString(2, "%"+search+"%");
+			pstmt.setInt(3, (page-1)*3);
+			rs = pstmt.executeQuery();
+			while(rs.next()) { //rs.next() 커서이동 return값 boolean
+				Board board = new Board();
+				board.setId(rs.getInt("b.id"));
+				board.setUserId(rs.getInt("b.userId"));
+				board.setTitle(rs.getString("b.title"));
+				board.setContent(rs.getString("b.content")+" ");
+				board.setReadCount(rs.getInt("b.readCount"));
+				board.setCreateDate(rs.getTimestamp("b.createDate"));
+				
+				//(2) board에 user객체에 username 저장 (추후: userProfile 저장)
+				board.getUser().setUsername(rs.getString("u.username")); 
+				board.getUser().setUserProfile(rs.getString("u.userProfile"));
+				
+				boards.add(board); //컬렉션에 담아주기
+			}
+			
+			return boards;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, pstmt, rs);
+		}
+		
+		return null;
+	}
 }
 
 

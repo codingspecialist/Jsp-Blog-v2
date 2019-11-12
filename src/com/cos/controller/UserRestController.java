@@ -29,7 +29,7 @@ public class UserRestController extends HttpServlet {
 		response.setContentType("text/plain; charset=UTF-8"); //MIME 타입
 		
 		String username = request.getParameter("username");
-		System.out.println(username);
+		
 		//DAO연결해서 select 해보고 있으면 null 확인
 		UserDao userDao = new UserDao();
 		User user = userDao.findByUsername(username);

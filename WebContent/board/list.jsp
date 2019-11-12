@@ -33,11 +33,11 @@
 					<nav class="blog-pagination justify-content-center d-flex">
 						<ul class="pagination">
 						    <!-- page-item disabled -->
-							<li class="page-item"><a href="/blog/board?cmd=list&page=${param.page-1}" class="page-link" aria-label="Previous"> <span aria-hidden="true"> <span
+							<li class="page-item"><a href="/blog/board?cmd=list&page=${param.page-1}&search=${search}" class="page-link" aria-label="Previous"> <span aria-hidden="true"> <span
 										class="lnr lnr-chevron-left"></span>
 								</span>
 							</a></li>
-							<li class="page-item"><a href="/blog/board?cmd=list&page=${param.page+1}" class="page-link" aria-label="Next"> <span aria-hidden="true"> <span class="lnr lnr-chevron-right"></span>
+							<li class="page-item"><a href="/blog/board?cmd=list&page=${param.page+1}&search=${search}" class="page-link" aria-label="Next"> <span aria-hidden="true"> <span class="lnr lnr-chevron-right"></span>
 								</span>
 							</a></li>
 						</ul>
@@ -48,7 +48,7 @@
 				<div class="blog_right_sidebar">
 					<aside class="single_sidebar_widget search_widget">
 						<div class="input-group">
-						    <form action="/blog/board?cmd=search">
+						    <form action="/blog/board?cmd=list&page=1" method="post">
 							<input type="text" name="search" class="form-control" placeholder="Search Posts"> 
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="submit">

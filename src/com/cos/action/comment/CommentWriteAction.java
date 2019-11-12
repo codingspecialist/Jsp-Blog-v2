@@ -23,9 +23,9 @@ public class CommentWriteAction implements Action {
 		int boardId = Integer.parseInt(request.getParameter("boardId"));
 		String content = request.getParameter("content");
 
-		System.out.println("userId : " + userId);
-		System.out.println("boardId : " + boardId);
-		System.out.println("content : " + content);
+		//System.out.println("userId : " + userId);
+		//System.out.println("boardId : " + boardId);
+		//System.out.println("content : " + content);
 
 		Comment commentForm = new Comment();
 		commentForm.setUserId(userId);
@@ -47,7 +47,6 @@ public class CommentWriteAction implements Action {
 			Gson gson = new Gson();
 			String commentJson = gson.toJson(comment);
 
-			System.out.println("(1) commentJson : "+commentJson);
 			// 데이터 응답
 			response.setContentType("application/json; charset=UTF-8");
 			PrintWriter out = response.getWriter();

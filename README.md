@@ -1,8 +1,8 @@
-###### MARK DOWN (md)
+#### 나만의 블로그 만들기 JSP+Model2+MySQL
 
-<https://github.com/codingspecialistjsp-blog-mysql-2019-10>
+- git주소 : <https://github.com/codingspecialistjsp-blog-mysql-2019-10>
 
-(https://postfiles.pstatic.net/MjAxOTExMTJfNzYg/MDAxNTczNTM5NTA0NTUw.uoTg1BMfppFO5RnESgJliaDKr6lDNFZ9dkEXYcBXZDEg.8wCK4u8NLuajvx_5UG18szRcuzlexIAQppZsWb1m9Vog.PNG.getinthere/Screenshot_23.png?type=w773)
+![blog](https://postfiles.pstatic.net/MjAxOTExMTJfNzYg/MDAxNTczNTM5NTA0NTUw.uoTg1BMfppFO5RnESgJliaDKr6lDNFZ9dkEXYcBXZDEg.8wCK4u8NLuajvx_5UG18szRcuzlexIAQppZsWb1m9Vog.PNG.getinthere/Screenshot_23.png?type=w773)
 
 #### 1. 사용자 생성 및 권한 주기 및 DB 생성
 - create user 'cos'@'localhost' identified by 'bitc5600';

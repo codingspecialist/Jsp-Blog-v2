@@ -38,8 +38,11 @@ public class UserUpdateAction implements Action{
 		int result = dao.update(user);
 		
 		if(result == 1) {
+			
+			// 세션 다시 불러오기
 			HttpSession session = request.getSession();
-			session.setAttribute("user", user);
+			User u = (User) session.getAttribute("user");
+			session.setAttribute("user", u);
 			response.sendRedirect("/blog/index.jsp");
 		}else {
 			Script.back(response);

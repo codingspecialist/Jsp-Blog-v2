@@ -1,15 +1,17 @@
-*** MARK DOWN (md)
+###### MARK DOWN (md)
 
-https://github.com/codingspecialist/jsp-blog-mysql-2019-10
+<https://github.com/codingspecialistjsp-blog-mysql-2019-10>
 
-** 1. 사용자 생성 및 권한 주기 및 DB 생성
-create user 'cos'@'localhost' identified by 'bitc5600';
-GRANT ALL PRIVILEGES ON *.* TO cos@localhost;
-create database cos;
-use cos;
+(https://postfiles.pstatic.net/MjAxOTExMTJfNzYg/MDAxNTczNTM5NTA0NTUw.uoTg1BMfppFO5RnESgJliaDKr6lDNFZ9dkEXYcBXZDEg.8wCK4u8NLuajvx_5UG18szRcuzlexIAQppZsWb1m9Vog.PNG.getinthere/Screenshot_23.png?type=w773)
 
+#### 1. 사용자 생성 및 권한 주기 및 DB 생성
+- create user 'cos'@'localhost' identified by 'bitc5600';
+- GRANT ALL PRIVILEGES ON *.* TO cos@localhost;
+- create database cos;
+- use cos;
 
-** 2. 테이블
+#### 2. 테이블
+```sql
 CREATE TABLE user(
 	id int auto_increment primary key,
     username varchar(100) not null unique,
@@ -19,7 +21,9 @@ CREATE TABLE user(
     userProfile varchar(200) default '/blog/img/userProfile.png',
     createDate timestamp
 ) engine=InnoDB default charset=utf8;
+```
 
+```sql
 CREATE TABLE board(
 	id int auto_increment primary key,
     userId int,
@@ -29,8 +33,9 @@ CREATE TABLE board(
     createDate timestamp,
     foreign key (userId) references user (id)
 ) engine=InnoDB default charset=utf8;
+```
 
-
+```sql
 CREATE TABLE comment(
 	id int auto_increment primary key,
     userId int,
@@ -40,7 +45,9 @@ CREATE TABLE comment(
     foreign key (userId) references user (id) on delete set null,
     foreign key (boardId) references board (id) on delete cascade
 ) engine=InnoDB default charset=utf8;
+```
 
+```sql
 CREATE TABLE reply(
 	id int auto_increment primary key,
     commentId int,
@@ -50,14 +57,13 @@ CREATE TABLE reply(
     foreign key (commentId) references comment (id) on delete cascade,
     foreign key (userId) references user (id) on delete set null
 ) engine=InnoDB default charset=utf8;
+```
 
-** 3. Factory 세팅하기
-https://blog.naver.com/codingspecialist/221681388208
+#### 3. Factory 세팅하기
+<https://blog.naver.com/codingspecialist/221681388208>
 
-
-** 4. 부트스트랩 커스터마이징 HTML파일
+#### 4. 부트스트랩 커스터마이징 HTML파일
 WebContent/ui_sample/**
 
-
-** 5. 실행 영상
-https://www.youtube.com/watch?v=머시기
+#### 5. 실행 영상
+<https://www.youtube.com/watch?v=머시기>

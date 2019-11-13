@@ -21,7 +21,7 @@ public class ReplyListAction implements Action{
 		BufferedReader in = request.getReader();
 		int commentId = Integer.parseInt(in.readLine());
 		
-		System.out.println("commentId : "+commentId);
+		//System.out.println("commentId : "+commentId);
 		
 		ReplyDao dao = new ReplyDao();
 		List<Reply> replys = dao.findByCommentId(commentId);
@@ -29,7 +29,7 @@ public class ReplyListAction implements Action{
 		if(replys != null) {
 			Gson gson = new Gson();
 			String replyJson = gson.toJson(replys);
-			System.out.println(replyJson);
+			//System.out.println(replyJson);
 			//Image 를 전송 = MIME 확인
 			response.setContentType("application/json; charset=utf-8");
 			PrintWriter out = response.getWriter();

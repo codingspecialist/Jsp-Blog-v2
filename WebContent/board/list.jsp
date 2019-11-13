@@ -10,8 +10,8 @@
 					<c:forEach var="board" items="${boards}">
 						<!-- 블로그 글 시작 -->
 						<article class="blog_style1">
-							<div class="blog_img" style="width:100%; height:270px; overflow:hidden;">
-								<img style="width: 100%; max-height:400px;" class="img-fluid" src="${board.previewImg}" alt="">
+							<div class="blog_img" style="width: 100%; height: 270px; overflow: hidden;">
+								<img style="width: 100%; max-height: 400px;" class="img-fluid" src="${board.previewImg}" alt="">
 							</div>
 							<div class="blog_text">
 								<div class="blog_text_inner">
@@ -32,29 +32,33 @@
 					<!-- 페이징하기 -->
 					<nav class="blog-pagination justify-content-center d-flex">
 						<ul class="pagination">
-						    <!-- page-item disabled -->
+							<!-- page-item disabled -->
 							<li class="page-item"><a href="/blog/board?cmd=list&page=${param.page-1}&search=${search}" class="page-link" aria-label="Previous"> <span aria-hidden="true"> <span
 										class="lnr lnr-chevron-left"></span>
 								</span>
 							</a></li>
-							<li class="page-item"><a href="/blog/board?cmd=list&page=${param.page+1}&search=${search}" class="page-link" aria-label="Next"> <span aria-hidden="true"> <span class="lnr lnr-chevron-right"></span>
+							<li class="page-item"><a href="/blog/board?cmd=list&page=${param.page+1}&search=${search}" class="page-link" aria-label="Next"> <span aria-hidden="true"> <span
+										class="lnr lnr-chevron-right"></span>
 								</span>
 							</a></li>
 						</ul>
 					</nav>
 				</div>
 			</div>
+
+			<!-- 검색하기 -->
 			<div class="col-lg-4">
 				<div class="blog_right_sidebar">
 					<aside class="single_sidebar_widget search_widget">
 						<div class="input-group">
-						    <form action="/blog/board?cmd=list&page=1" method="post">
-							<input type="text" name="search" class="form-control" placeholder="Search Posts"> 
-							<span class="input-group-btn">
-								<button class="btn btn-default" type="submit">
-									<i class="lnr lnr-magnifier"></i>
-								</button>
-							</span>
+							<form action="/blog/board?cmd=list&page=1" method="post">
+
+								<input type="text" name="search" class="form-control" placeholder="Search Posts"> <span class="input-group-btn">
+									<button class="btn btn-default" type="submit">
+										<i class="lnr lnr-magnifier"></i>
+									</button>
+								</span>
+
 							</form>
 						</div>
 						<!-- /input-group -->

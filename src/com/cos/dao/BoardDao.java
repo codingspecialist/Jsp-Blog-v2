@@ -206,7 +206,13 @@ public class BoardDao {
 	
 	public List<Board> findAll(int page, String search){
 		//(1) 조인 쿼리로 변경
-		final String SQL = "SELECT * FROM board b, user u WHERE b.userId = u.id and (b.content like ? or b.title like ?) ORDER BY b.id DESC limit ?, 3";
+		StringBuffer sb = new StringBuffer();
+		sb.append("SELECT * FROM board b, user u ");
+		sb.append("WHERE b.userId = u.id and ");
+		sb.append("(b.content like ? or b.title like ?) ");
+		sb.append("ORDER BY b.id DESC limit ?, 3");
+		
+		final String SQL = sb.toString(); 
 		conn = DBConn.getConnection();
 		
 		try {

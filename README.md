@@ -37,8 +37,8 @@ CREATE TABLE comment(
     boardId int,
     content varchar(300) not null,
     createDate timestamp,
-    foreign key (userId) references user (id),
-    foreign key (boardId) references board (id)
+    foreign key (userId) references user (id) on delete set null,
+    foreign key (boardId) references board (id) on delete cascade
 ) engine=InnoDB default charset=utf8;
 
 CREATE TABLE reply(
@@ -47,8 +47,8 @@ CREATE TABLE reply(
     userId int,
     content varchar(300) not null,
     createDate timestamp,
-    foreign key (commentId) references comment (id),
-    foreign key (userId) references user (id)
+    foreign key (commentId) references comment (id) on delete cascade,
+    foreign key (userId) references user (id) on delete set null
 ) engine=InnoDB default charset=utf8;
 
 ** 3. Factory 세팅하기

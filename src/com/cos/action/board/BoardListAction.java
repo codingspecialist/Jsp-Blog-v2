@@ -22,8 +22,6 @@ public class BoardListAction implements Action{
 		
 		int page = Integer.parseInt(request.getParameter("page"));
 		
-		//page <= 0 혹은 page > maxNum 버튼 비활성화
-		
 		if(page <= 0) {
 			page = 1;
 		}
@@ -32,6 +30,7 @@ public class BoardListAction implements Action{
 		List<Board> boards = null;
 		List<Board> hotBoards = bDao.findOrderByReadCountDesc();
 		
+		// search와 목록을 분기
 		if(request.getParameter("search") == null || request.getParameter("search").equals("")) {
 			boards = bDao.findAll(page); //paging 하기
 			request.setAttribute("search", null);

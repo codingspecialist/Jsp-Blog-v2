@@ -62,9 +62,9 @@ public class BoardDao {
 	public List<Board> findOrderByReadCountDesc(){
 		final String SQL = "SELECT * FROM board ORDER BY readCount DESC limit 3";
 		conn = DBConn.getConnection();
-		
+		List<Board> boards = new ArrayList<>();
 		try {
-			List<Board> boards = new ArrayList<>();
+			
 			
 			pstmt = conn.prepareStatement(SQL);
 			rs = pstmt.executeQuery();
@@ -80,14 +80,13 @@ public class BoardDao {
 				boards.add(board); //컬렉션에 담아주기
 			}
 			
-			return boards;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DBClose.close(conn, pstmt, rs);
 		}
 		
-		return null;
+		return boards;
 	}
 	
 	//조회수 증가
@@ -139,10 +138,9 @@ public class BoardDao {
 		//(1) 조인 쿼리로 변경
 		final String SQL = "SELECT * FROM board b, user u WHERE b.userId = u.id ORDER BY b.id DESC limit ?, 3";
 		conn = DBConn.getConnection();
+		List<Board> boards = new ArrayList<>();
 		
-		try {
-			List<Board> boards = new ArrayList<>();
-			
+		try {	
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setInt(1, (page-1)*3);
 			rs = pstmt.executeQuery();
@@ -162,14 +160,13 @@ public class BoardDao {
 				boards.add(board); //컬렉션에 담아주기
 			}
 			
-			return boards;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DBClose.close(conn, pstmt, rs);
 		}
 		
-		return null;
+		return boards;
 	}
 	
 	//상세 보기 SELECT * FROM board WHERE id = ?
@@ -214,10 +211,9 @@ public class BoardDao {
 		
 		final String SQL = sb.toString(); 
 		conn = DBConn.getConnection();
+		List<Board> boards = new ArrayList<>();
 		
 		try {
-			List<Board> boards = new ArrayList<>();
-			
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, "%"+search+"%");
 			pstmt.setString(2, "%"+search+"%");
@@ -238,15 +234,14 @@ public class BoardDao {
 				
 				boards.add(board); //컬렉션에 담아주기
 			}
-			
-			return boards;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DBClose.close(conn, pstmt, rs);
 		}
 		
-		return null;
+		return boards;
 	}
 }
 

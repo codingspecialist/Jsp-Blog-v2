@@ -104,10 +104,9 @@ public class CommentDao {
 		final String SQL = sb.toString();
 		
 		conn = DBConn.getConnection();
+		List<Comment> comments = new ArrayList<>();
 		
 		try {
-			List<Comment> comments = new ArrayList<>();
-			
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setInt(1, boardId);
 			rs = pstmt.executeQuery();
@@ -123,14 +122,12 @@ public class CommentDao {
 				comment.getUser().setUserProfile(rs.getString("u.userProfile")); //추가
 				comments.add(comment); //컬렉션에 comment 담기
 			}
-			
-			return comments;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DBClose.close(conn, pstmt, rs);
 		}
 		
-		return null;
+		return comments;
 	}
 }

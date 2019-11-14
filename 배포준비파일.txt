@@ -1,0 +1,160 @@
+$ clear
+
+$ sudo apt-get update  (리스트를 업데이트 하는 명령어)
+$ sudo apt-get upgrade (내 OS에 설치된 프로그램을 최신버전으로 만들어줌)
+$ sudo apt-get dist-upgrade (의존성 확인 후 최신 버전 반영)
+
+$ sudo apt-cache search tomcat
+$ sudo apt-get install tomcat9
+
+$ pwd
+$ cd ..
+$ ls
+
+$ cd 경로
+$ cd $home
+$ cd ~/
+
+$ sudo find / -name tomcat9
+$ sudo netstat -nlpt
+
+(nano는 텍스트 편집기)
+$ sudo nano /var/lib/tomcat8/conf/server.xml
+
+서비스를 호출
+$ sudo service tomcat9 stop
+$ sudo service tomcat9 start
+$ sudo service tomcat9 restart
+
+실제 실행파일을 호출  ./파일명
+바로가기 링크 ln 명령어
+
+폴더 생성
+$ mkdir test
+
+파일 생성
+$ touch index.html
+$ nano main.html
+
+파일 복사
+$ cp index.html img/
+
+파일 이동 (img 폴더 들어가서)
+$ mv ../main.html ../movie/
+
+권한 확인 및 변경 (sudo)
+
+$ sudo passwd root
+
+$ su root
+
+// WinScp 다운로드
+
+// Tomcat 9 다운로드
+
+// war파일 만들기
+
+$ sudo apt-cache search mysql
+
+(mysql 5.7)
+$ sudo apt-get install mysql-server
+
+/etc/apt/sources.list
+http://mirror.kakao.com/ubuntu/
+
+실제 사이트 다운로드 주소 (deb)
+wget 명령어
+dpkg 설치
+
+$ mysql --version
+
+한글 설정 /etc/mysql/mysql.conf.d/mysqld.cnf
+[client]
+default-character-set=utf8
+
+[mysql]
+default-character-set=utf8
+
+[mysqld]
+collation-server = utf8_unicode_ci
+init-connect='SET NAMES utf8'
+init_connect='SET collation_connection = utf8_general_ci'
+character-set-server=utf8
+
+#전체 IP 허용
+bind-address 0.0.0.0
+
+sudo service mysql restart
+
+sudo mysql -u root -p
+
+show variables like 'c%';
+
+create user 'cos'@'localhost' identified by 'Bitc5600!';
+GRANT ALL PRIVILEGES ON *.* TO cos@localhost;
+create database cos;
+use cos;
+
+CREATE TABLE user(
+	id int auto_increment primary key,
+    username varchar(100) not null unique,
+    password varchar(100) not null,
+    email varchar(100) not null,
+    address varchar(100) not null,
+    userProfile varchar(200) default '/blog/img/userProfile.png',
+    createDate timestamp
+) engine=InnoDB default charset=utf8;
+
+
+
+CREATE TABLE board(
+	id int auto_increment primary key,
+    userId int,
+    title varchar(100) not null,
+    content longtext,
+    readCount int default 0,
+    createDate timestamp,
+    foreign key (userId) references user (id)
+) engine=InnoDB default charset=utf8;
+
+
+
+CREATE TABLE comment(
+	id int auto_increment primary key,
+    userId int,
+    boardId int,
+    content varchar(300) not null,
+    createDate timestamp,
+    foreign key (userId) references user (id) on delete set null,
+    foreign key (boardId) references board (id) on delete cascade
+) engine=InnoDB default charset=utf8;
+
+
+
+CREATE TABLE reply(
+	id int auto_increment primary key,
+    commentId int,
+    userId int,
+    content varchar(300) not null,
+    createDate timestamp,
+    foreign key (commentId) references comment (id) on delete cascade,
+    foreign key (userId) references user (id) on delete set null
+) engine=InnoDB default charset=utf8;
+
+show tables;
+
+cd /var/lib/tomcat9/webapps
+
+배포하기전에 context
+
+ <Resource name="jdbc/TestDB" auth="Container" type="javax.sql.DataSource"
+               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+               username="cos" password="bitc5600" driverClassName="com.mysql.cj.jdbc.Driver"
+               url="jdbc:mysql://127.0.0.1:3306/cos?serverTimezone=Asia/Seoul"/>
+
+
+
+
+
+
+

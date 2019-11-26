@@ -1,0 +1,160 @@
+필요한 개발 툴
+putty(ssh 접근), puttygen(확장자 변경), winscp(원격접속)
+
+1. 인스턴스 생성
+- ubuntu 16.04
+- 22번(기본), 8080(톰켓), 3306(MySQL) - 인바운드 규칙
+
+2. putty - pem -> ppk 변경 (private key)
+- AWS는 보안 규칙을 RSA사용
+- 접속하려면 private key가 필요하다.
+- pem 확장자는 putty에서 사용이 불가능하기 때문에 puttygen 프로그램으로
+ppk 확장자로 변경한다.
+
+3. dns 주소
+ec2-52-78-102-153.ap-northeast-2.compute.amazonaws.com
+
+4. putty로 접속
+최초아이디 : ubuntu
+
+5. ubuntu 기본 설정
+(저장소 목록 업데이트) (원격 저장소의 리스트를 동기화)
+$ sudo apt-get update
+
+6. 톰켓 설치 (JDK 설치 필요 없음) 8점대!!
+(내 개발환경 톰켓 8.5 -> 서버 톰켓 8.5)
+$ sudo apt-cache search tomcat
+(사용중인 포트 확인)
+$ netstat -nlpt
+
+apt-get으로 설치하면 서비스에 등록됨.
+$ sudo service tomcat8 stop
+$ sudo service tomcat8 start
+$ sudo service tomcat8 restart
+
+7. 톰켓 설정, 웹서버 위치 찾기
+$ sudo find / -name tomcat8
+
+/var/lib/tomcat8/conf 설정
+/var/lib/tomcat8/webapps 웹서버
+
+8. MySQL 설치 8.0  (XXXXXXXXX 안함)
+(개발환경 8.0) (서버 8.0)
+$ sudo apt-cache search mysql
+8.0 없음!!!
+(1) MySQL 사이트에서 다운로드 - 설치
+https://dev.mysql.com/downloads/
+$ wget https://dev.mysql.com/get/mysql-apt-config_0.8.14-1_all.deb
+$ dpkg 명령어로 설치하기
+$ sudo apt-get update
+
+(2) MySQL8.0이 있는 저장소를 연결
+$ sudo nano /etc/apt/sources.list
+http://mirror.kakao.com/ubuntu/ubuntu/pool/main/m/mysql-8.0/
+
+9. MySQL 5.7 설치
+$ sudo apt-get install mysql-server
+$ netstat -nlpt
+
+$ cd /etc/mysql/mysql.conf.d
+$ sudo nano mysqld.cnf
+
+10. MySQL 한글 설정(UTF-8)
+[client]
+default-character-set=utf8
+
+[mysql]
+default-character-set=utf8
+
+[mysqld]
+collation-server = utf8_unicode_ci
+init-connect='SET NAMES utf8'
+init_connect='SET collation_connection = utf8_general_ci'
+character-set-server=utf8
+
+11. 외부접속 허용 (모든 아이피 허용)
+bind-address 0.0.0.0
+
+12. mysql 재시작
+$ sudo service mysql restart
+
+13. mysql 접속
+$ mysql -u root -p
+
+14. 한글설정이 제대로 되있는지 확인
+show variables like 'c%';
+
+15. 사용자 생성, 권한 부여, DB 생성
+create user 'cos'@'%' identified by 'Bitc5600!';
+GRANT ALL PRIVILEGES ON *.* TO cos@'%';
+flush privileges;
+create database cos;
+use cos;
+
+혹시 잘못 적었으면
+SELECT User, Host FROM mysql.user;
+UPDATE mysql.user SET host = '%' WHERE user = 'cos';
+commit;
+
+
+16. 테이블 생성
+CREATE TABLE user(
+	id int auto_increment primary key,
+    username varchar(100) not null unique,
+    password varchar(100) not null,
+    email varchar(100) not null,
+    address varchar(100) not null,
+    userProfile varchar(200) default '/blog/img/userProfile.png',
+    createDate timestamp
+) engine=InnoDB default charset=utf8;
+
+
+
+CREATE TABLE board(
+	id int auto_increment primary key,
+    userId int,
+    title varchar(100) not null,
+    content longtext,
+    readCount int default 0,
+    createDate timestamp,
+    foreign key (userId) references user (id)
+) engine=InnoDB default charset=utf8;
+
+
+
+CREATE TABLE comment(
+	id int auto_increment primary key,
+    userId int,
+    boardId int,
+    content varchar(300) not null,
+    createDate timestamp,
+    foreign key (userId) references user (id) on delete set null,
+    foreign key (boardId) references board (id) on delete cascade
+) engine=InnoDB default charset=utf8;
+
+
+
+CREATE TABLE reply(
+	id int auto_increment primary key,
+    commentId int,
+    userId int,
+    content varchar(300) not null,
+    createDate timestamp,
+    foreign key (commentId) references comment (id) on delete cascade,
+    foreign key (userId) references user (id) on delete set null
+) engine=InnoDB default charset=utf8;
+
+17. war파일 만들기 - 톰켓 버전 꼭 확인
+
+18. webapps 폴더 권한 변경
+cd /var/lib/tomcat8
+sudo chmod 777 webapps
+
+
+
+
+
+
+
+
+

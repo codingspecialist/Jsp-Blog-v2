@@ -29,7 +29,7 @@
   <Resource name="jdbc/TestDB" auth="Container" type="javax.sql.DataSource"
                maxTotal="100" maxIdle="30" maxWaitMillis="10000"
                username="cos" password="Bitc5600!" driverClassName="com.mysql.cj.jdbc.Driver"
-               url="jdbc:mysql://127.0.0.1:3306/cos?serverTimezone=Asia/Seoul"/>
+               url="jdbc:mysql://localhost:3306/cos?serverTimezone=Asia/Seoul"/>
 
 
 

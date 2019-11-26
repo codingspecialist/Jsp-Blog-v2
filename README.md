@@ -5,8 +5,8 @@
 ![blog](https://postfiles.pstatic.net/MjAxOTExMTJfNzYg/MDAxNTczNTM5NTA0NTUw.uoTg1BMfppFO5RnESgJliaDKr6lDNFZ9dkEXYcBXZDEg.8wCK4u8NLuajvx_5UG18szRcuzlexIAQppZsWb1m9Vog.PNG.getinthere/Screenshot_23.png?type=w773)
 
 #### 1. 사용자 생성 및 권한 주기 및 DB 생성
-- create user 'cos'@'localhost' identified by 'bitc5600';
-- GRANT ALL PRIVILEGES ON *.* TO cos@localhost;
+- create user 'cos'@'%' identified by 'bitc5600';
+- GRANT ALL PRIVILEGES ON *.* TO 'cos'@'%';
 - create database cos;
 - use cos;
 
@@ -66,4 +66,8 @@ CREATE TABLE reply(
 WebContent/ui_sample/**
 
 #### 5. 실행 영상
+<<<<<<< HEAD
 -<https://www.youtube.com/watch?v=YyrSoUDwq-8>
+=======
+<https://www.youtube.com/embed/YyrSoUDwq-8>
+>>>>>>> 9b43ae404e1f50ea4b65c991fd72b1f8655fa2ee

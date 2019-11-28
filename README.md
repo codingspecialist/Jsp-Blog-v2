@@ -66,8 +66,5 @@ CREATE TABLE reply(
 WebContent/ui_sample/**
 
 #### 5. 실행 영상
-<<<<<<< HEAD
--<https://www.youtube.com/watch?v=YyrSoUDwq-8>
-=======
-<https://www.youtube.com/embed/YyrSoUDwq-8>
->>>>>>> 9b43ae404e1f50ea4b65c991fd72b1f8655fa2ee
+
+<https://www.youtube.com/watch?v=YyrSoUDwq-8>
